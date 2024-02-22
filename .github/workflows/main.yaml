@@ -19,12 +19,12 @@ jobs:
       - name: Login to ACR
         uses: azure/docker-login@v1
         with:
-          login-server: ${{env.REGISTRY}}
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
           username: ${{secrets.REGISTRY_USERNAME}}
           password: ${{secrets.REGISTRY_PASSWORD}}
 
       - name: Build and push Docker image to ACR
         id: build
         run: |
-         docker build -f MasrafApproval.API/Dockerfile -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/masraf-approval-api:latest . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/masraf-approval-api:${{github.sha}}
-         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/masraf-approval-api --all-tags
+         docker build  -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/omd-fundamental:latest . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/omd-fundamental:${{github.sha}}
+         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/omd-fundamental --all-tags

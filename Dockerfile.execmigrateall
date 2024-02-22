@@ -1,0 +1,12 @@
+# Dockerfile for execute-migrate-all service
+FROM docker.getcollate.io/openmetadata/server:1.3.0
+
+# Add custom configuration if needed
+COPY ./bootstrap/bootstrap_storage.sh /bootstrap/bootstrap_storage.sh
+
+# Expose ports 8585 and 8586
+EXPOSE 8585
+EXPOSE 8586
+
+# Command to run the execute-migrate-all container
+CMD ["./bootstrap/bootstrap_storage.sh", "migrate-all"]

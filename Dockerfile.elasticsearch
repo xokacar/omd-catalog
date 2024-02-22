@@ -1,0 +1,12 @@
+# Dockerfile for elasticsearch service
+FROM docker.elastic.co/elasticsearch/elasticsearch:8.10.2
+
+# Add custom configuration if needed
+# No custom configuration provided in the original docker-compose.yml
+
+# Expose ports 9200 and 9300
+EXPOSE 9200
+EXPOSE 9300
+
+# Command to run the Elasticsearch container
+CMD ["elasticsearch"]

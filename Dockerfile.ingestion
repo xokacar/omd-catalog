@@ -1,0 +1,11 @@
+# Dockerfile for ingestion service
+FROM docker.getcollate.io/openmetadata/ingestion:1.3.0
+
+# Add custom configuration if needed
+COPY ./ingestion_dependency.sh /opt/airflow/ingestion_dependency.sh
+
+# Expose port 8080
+EXPOSE 8080
+
+# Command to run the ingestion container
+ENTRYPOINT ["/bin/bash", "/opt/airflow/ingestion_dependency.sh"]

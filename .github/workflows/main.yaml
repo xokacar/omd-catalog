@@ -22,9 +22,35 @@ jobs:
           login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
           username: ${{secrets.REGISTRY_USERNAME}}
           password: ${{secrets.REGISTRY_PASSWORD}}
-
-      - name: Build and push Docker image to ACR
-        id: build
+          
+      - name: Build and push Docker image for Omd Server to ACR
+        id: build-omdserver
         run: |
-         docker build  -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/omd-fundamental:latest . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/omd-fundamental:${{github.sha}}
-         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/omd-fundamental --all-tags
+         docker build -f Dockerfile.omdserver -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/omd-server-001:latest . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/omd-server-001:${{github.sha}}
+         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/omd-server-001 --all-tags
+      
+      - name: Build and push Docker image for Ingestion to ACR
+        id: build-ingestion
+        run: |
+          docker build -f Dockerfile.ingestion -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/omd-ingestion-001:latest . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/omd-ingestion-001:${{github.sha}}
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/omd-ingestion-001 --all-tags
+       
+      - name: Build and push Docker image for ElasticSearch to ACR
+        id: build-elasticsearch
+        run: |
+         docker build  -f Dockerfile.elasticsearch -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/omd-elasticsearch-001:latest . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/omd-elasticsearch-001:${{github.sha}}
+         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/omd-elasticsearch-001 --all-tags
+
+      - name: Build and push Docker image for ExecMigrateAll to ACR
+        id: build-execmigrateall
+        run: |
+         docker build -f Dockerfile.execmigrateall -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/omd-execmigrateall-001:latest . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/omd-execmigrateall-001:${{github.sha}}
+         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/omd-execmigrateall-001 --all-tags
+
+      - name: Build and push Docker image for MySQL to ACR
+        id: build-mysql
+        run: |
+          docker build -f Dockerfile.mysql -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/omd-fundamental:latest . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/omd-fundamental:${{github.sha}}
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/omd-fundamental --all-tags
+  
+         

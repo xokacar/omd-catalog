@@ -1,0 +1,30 @@
+name: Docker Image Build and Azure Container Registry Push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to ACR
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{env.REGISTRY}}
+          username: ${{secrets.REGISTRY_USERNAME}}
+          password: ${{secrets.REGISTRY_PASSWORD}}
+
+      - name: Build and push Docker image to ACR
+        id: build
+        run: |
+         docker build -f MasrafApproval.API/Dockerfile -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/masraf-approval-api:latest . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/masraf-approval-api:${{github.sha}}
+         docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/masraf-approval-api --all-tags
